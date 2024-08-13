@@ -1,0 +1,15 @@
+.content{
+    display: flex;
+    align-items: center;
+    margin-top: 25vh;
+    margin-left: 10vh;
+    max-width: 600px;
+    float: left;
+    flex-direction: column;
+}
+.mainSentence{
+    font-family: 'Times New Roman', Times, serif;
+}
+.mainImg{
+    margin-top: 10vh;
+}

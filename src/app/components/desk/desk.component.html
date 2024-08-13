@@ -1,0 +1,51 @@
+<h4 class="project-title">Project's title <mat-icon class="edit-icon">edit</mat-icon></h4>
+<button mat-raised-button matTooltip="Create new task" class="create-task-btn" (click)="createTask()">
+    +
+</button>
+<div class="content">
+    <div class="example-container">
+        <h2>To do</h2>
+        <div
+          cdkDropList
+          #todoList="cdkDropList"
+          [cdkDropListData]="todo"
+          [cdkDropListConnectedTo]="[doingList, doneList]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          @for (item of todo; track item) {
+            <div class="example-box" cdkDrag>{{item}}</div>
+          }
+        </div>
+      </div>
+      <div class="example-container">
+        <h2>Doing</h2>
+        <div
+          cdkDropList
+          #doingList="cdkDropList"
+          [cdkDropListData]="doing"
+          [cdkDropListConnectedTo]="[todoList, doneList]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          @for (item of doing; track item) {
+            <div class="example-box" cdkDrag>{{item}}</div>
+          }
+        </div>
+      </div>
+      <div class="example-container">
+        <h2>Done</h2>
+        <div
+          cdkDropList
+          #doneList="cdkDropList"
+          [cdkDropListData]="done"
+          [cdkDropListConnectedTo]="[todoList, doingList]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          @for (item of done; track item) {
+            <div class="example-box" cdkDrag>{{item}}</div>
+          }
+        </div>
+      </div>
+      
+</div>
+  
+  
