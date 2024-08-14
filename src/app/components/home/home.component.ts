@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit{
   isLogged: boolean = false;
   constructor(
     private router: Router,
+    private cookieService: CookieService
   ){}
   ngOnInit() {
     this.router.events.pipe(
@@ -26,7 +27,7 @@ export class HomeComponent implements OnInit{
     });
   }
   onRouteChange() {
-    if(localStorage.getItem("user") == "true"){
+    if(this.cookieService.get("user")){
       this.isLogged = true;
     }
   }

@@ -2,10 +2,10 @@
 <mat-dialog-content>
     <mat-form-field>
         <mat-label>Task's name</mat-label>
-        <input matInput>
+        <input matInput #taskName>
     </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button [mat-dialog-close]="false">Cancel</button>
-  <button mat-button [mat-dialog-close]="" cdkFocusInitial (click)="createTask()">Create</button>
+  <button mat-button [mat-dialog-close]="false" cdkFocusInitial (click)="createTask(taskName.value)">Create</button>
 </mat-dialog-actions>

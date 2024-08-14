@@ -4,6 +4,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule, NgForm} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
+import { CookieService } from 'ngx-cookie-service';
 
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
@@ -25,13 +26,15 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit{
   
   constructor(
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ){}
 
   ngOnInit(): void {
     this.fetchAllUsers();
     console.log(this.allUsers);
   }
+
   allUsers: User[] = [];
   http: HttpClient = inject(HttpClient);
   onLogin(form: NgForm){
@@ -42,10 +45,11 @@ export class LoginComponent implements OnInit{
       if(user.email == email && user.password == password){
         //LOG IN SUCCESS
         this.router.navigate(['/']);   
-        localStorage.setItem("user", "true");
+        this.cookieService.set('user', 'true');
       }
     }
   }
+  
   fetchAllUsers(){
     this.http.get<{[key: string]: User}>("https://todo-app-8ce90-default-rtdb.firebaseio.com/users.json")
     .pipe(map((response) => {

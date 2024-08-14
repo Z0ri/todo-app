@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { MatMenuModule } from '@angular/material/menu';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -27,7 +28,8 @@ export class AppComponent implements OnInit{
   isLogged: boolean = false;
   
   constructor(
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ){}
 
   ngOnInit() {
@@ -39,13 +41,13 @@ export class AppComponent implements OnInit{
   }
   
   onRouteChange() {
-    if(localStorage.getItem("user") == "true"){
+    if(this.cookieService.get("user") == "true"){
       this.isLogged = true;
     }
   }
 
   onLogout(){
-    localStorage.clear();
+    this.cookieService.delete("user");
     window.location.reload();
   }
 }

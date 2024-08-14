@@ -7,9 +7,6 @@
     float: left;
     flex-direction: column;
 }
-.mainSentence{
-    font-family: 'Times New Roman', Times, serif;
-}
 .mainImg{
     margin-top: 10vh;
 }

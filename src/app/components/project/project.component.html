@@ -1,0 +1,63 @@
+<h4 class="project-title">Project's title <mat-icon class="edit-icon">edit</mat-icon></h4>
+<button mat-raised-button matTooltip="Create new task" class="create-task-btn" (click)="createTask()">
+    +
+</button>
+<div class="content">
+    <div class="example-container">
+      <!-- to do -->
+      <h2 class="list-title">To do</h2>
+        <div
+          cdkDropList
+          #todoList="cdkDropList"
+          [cdkDropListData]="todo"
+          [cdkDropListConnectedTo]="[doingList, doneList]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          @for (item of todo; track item) {
+            <div class="example-box" cdkDrag>
+              {{item}}
+              <a (click)="deleteTask(item)"><mat-icon class="bin-icon">delete</mat-icon></a>
+            </div>
+          }
+        </div>
+      </div>
+      <!-- doing -->
+      <div class="example-container">
+        <h2 class="list-title">Doing</h2>
+        <div
+          cdkDropList
+          #doingList="cdkDropList"
+          [cdkDropListData]="doing"
+          [cdkDropListConnectedTo]="[todoList, doneList]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          @for (item of doing; track item) {
+            <div class="example-box" cdkDrag>
+              {{item}}
+              <a (click)="deleteTask(item)"><mat-icon class="bin-icon">delete</mat-icon></a>
+            </div>
+          }
+        </div>
+      </div>
+      <!-- done -->
+      <div class="example-container">
+        <h2 class="list-title">Done</h2>
+        <div
+          cdkDropList
+          #doneList="cdkDropList"
+          [cdkDropListData]="done"
+          [cdkDropListConnectedTo]="[todoList, doingList]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          @for (item of done; track item) {
+            <div class="example-box" cdkDrag>
+              {{item}}
+              <a (click)="deleteTask(item)"><mat-icon class="bin-icon">delete</mat-icon></a>
+            </div>
+          }
+        </div>
+      </div>
+      
+</div>
+  
+  
