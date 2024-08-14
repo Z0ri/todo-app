@@ -5,7 +5,8 @@ import {CdkDrag, CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropList} f
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { TaskFormComponent } from '../task-form/task-form.component';
+import { DeskFormComponent } from '../desk-form/desk-form.component';
+
 @Component({
   selector: 'app-desk',
   standalone: true,
@@ -14,13 +15,14 @@ import { TaskFormComponent } from '../task-form/task-form.component';
     CdkDrag,
     CdkDropList,
     MatTooltipModule,
-    MatIcon
+    MatIcon,
   ],
   templateUrl: './desk.component.html',
   styleUrl: './desk.component.css'
 })
 export class DeskComponent {
+  readonly dialog = inject(MatDialog);
   createProject(){
-    
+    this.dialog.open(DeskFormComponent);
   }
 }

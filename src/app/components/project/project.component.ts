@@ -5,7 +5,7 @@ import {CdkDrag, CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropList} f
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { TaskFormComponent } from '../task-form/task-form.component';
+import { ProjectFormComponent } from '../project-form/project-form.component';
 import { SharingServiceService } from '../../services/sharing-service.service';
 
 @Component({
@@ -23,6 +23,8 @@ import { SharingServiceService } from '../../services/sharing-service.service';
   styleUrl: './project.component.css'
 })
 export class ProjectComponent implements OnInit{
+  readonly dialog = inject(MatDialog);
+
   todo: string[] = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
   doing: string[] = ['eat', 'jump', 'exercise', 'watch TV series', 'float'];
   done: string[] = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
@@ -40,7 +42,7 @@ export class ProjectComponent implements OnInit{
 
   createTask(){
     //dialog window opening
-    this.dialog.open(TaskFormComponent, {
+    this.dialog.open(ProjectFormComponent, {
       data: {},
     });
   }
@@ -52,15 +54,14 @@ export class ProjectComponent implements OnInit{
     }
     // delete from doing
     if (this.doing.indexOf(task) !== -1) {
-      this.doing.splice(this.todo.indexOf(task), 1);
+      this.doing.splice(this.doing.indexOf(task), 1);
     }
-    //delete from done
+    // delete from done
     if (this.done.indexOf(task) !== -1) {
-      this.done.splice(this.todo.indexOf(task), 1);
+      this.done.splice(this.done.indexOf(task), 1);
     }
   }
 
-  readonly dialog = inject(MatDialog);
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
