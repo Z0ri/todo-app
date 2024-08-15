@@ -6,7 +6,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
 import { CookieService } from 'ngx-cookie-service';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, withFetch } from '@angular/common/http';
 import { map } from 'rxjs';
 import { User } from '../../../models/User';
 import { Router } from '@angular/router';
@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit{
 
   ngOnInit(): void {
     this.fetchAllUsers();
-    console.log(this.allUsers);
   }
 
   allUsers: User[] = [];
@@ -40,12 +39,11 @@ export class LoginComponent implements OnInit{
   onLogin(form: NgForm){
     let email = form.value.email;
     let password = form.value.password;
-
     for(let user of this.allUsers){
       if(user.email == email && user.password == password){
         //LOG IN SUCCESS
         this.router.navigate(['/']);   
-        this.cookieService.set('user', 'true');
+        this.cookieService.set('user', user.id);
       }
     }
   }

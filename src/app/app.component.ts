@@ -41,7 +41,7 @@ export class AppComponent implements OnInit{
   }
   
   onRouteChange() {
-    if(this.cookieService.get("user") == "true"){
+    if(this.cookieService.get("user")){
       this.isLogged = true;
     }
   }

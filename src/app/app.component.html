@@ -1,7 +1,7 @@
 <!--Navbar-->
 <mat-toolbar color="primary">
   <div>
-    <a routerLink="/" style="color: white;"><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon></a>
+    <a routerLink="/" style="color: white;"><mat-icon aria-label="Example home icon" fontIcon="home"></mat-icon></a>
     <button mat-button>Contacts</button>
   </div>
   <div class="buttons" *ngIf="!isLogged; else loggedInTemplate">

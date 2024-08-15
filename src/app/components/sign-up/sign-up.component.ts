@@ -3,7 +3,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule, NgForm} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, withFetch } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 

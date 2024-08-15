@@ -1,13 +1,13 @@
 <h1 class="title">SIGN UP</h1>
 <div class="form-container mat-elevation-z16">
-    <form #loginForm="ngForm" (ngSubmit)="onSignup(loginForm)">
+    <form #signupForm="ngForm" (ngSubmit)="onSignup(signupForm)">
         <mat-form-field class="example-full-width">
             <mat-label>Email</mat-label>
-            <input matInput placeholder="Email" value="" name="email" ngModel>
+            <input matInput placeholder="Email" name="email" ngModel>
         </mat-form-field>
         <mat-form-field class="example-full-width">
             <mat-label>Password</mat-label>
-            <input matInput placeholder="Password" value="" name="password" ngModel>
+            <input matInput placeholder="Password" name="password" ngModel>
         </mat-form-field>
         <button mat-raised-button type="submit">Sign up</button>
     </form>
