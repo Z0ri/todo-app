@@ -7,6 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectFormComponent } from '../project-form/project-form.component';
 import { SharingServiceService } from '../../services/sharing-service.service';
+import { title } from 'process';
 
 @Component({
   selector: 'app-project',
@@ -23,16 +24,23 @@ import { SharingServiceService } from '../../services/sharing-service.service';
   styleUrl: './project.component.css'
 })
 export class ProjectComponent implements OnInit{
+  projectTitle: string = "";
   readonly dialog = inject(MatDialog);
+  
 
   todo: string[] = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
   doing: string[] = ['eat', 'jump', 'exercise', 'watch TV series', 'float'];
   done: string[] = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
 
   ngOnInit(): void {
+    //get task's name
     this.sharingService.taskSubject.subscribe((taskName) => {
       this.todo.push(taskName);
     });
+    //get project's name
+    this.sharingService.cardTitleSubject.subscribe((title)=>{
+      this.projectTitle = title;
+    })
   }
 
   constructor(
@@ -43,7 +51,7 @@ export class ProjectComponent implements OnInit{
   createTask(){
     //dialog window opening
     this.dialog.open(ProjectFormComponent, {
-      data: {},
+      data: {}
     });
   }
 

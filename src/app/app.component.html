@@ -21,6 +21,9 @@
         <mat-icon [matMenuTriggerFor]="menu" style="font-size: 25px;" >account_circle</mat-icon>
       </a>
       <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="seeProfile()">
+          Profile
+        </button>
         <button mat-menu-item (click)="onLogout()">
           log out
         </button>

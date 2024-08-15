@@ -39,13 +39,14 @@ export class DeskFormComponent {
         task1: "sample"
       }
     };
-    
-    this.http.post(
-      `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`,
-      data
-    ).subscribe((response) => {
-      console.log(response);
-      this.sharingService.createCardSubject.next();
-    });
+    //send card's data via client
+    this.sharingService.cardInfoSubject.next(data);
+    //data insertion in DB
+    // this.http.post(
+    //   `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`,
+    //   data
+    // ).subscribe((response) => {
+    //   this.sharingService.createCardSubject.next();
+    // });
   }
 }

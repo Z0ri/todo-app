@@ -1,11 +1,13 @@
-.example-card {
-    max-width: 400px;
-}
-  
-.example-card-footer {
-padding: 16px;
-}
 mat-card {
     background-color: white;
     color: black;
+}
+.example-card {
+    max-width: 400px;
+    margin-left: 5vh;
+    margin-bottom: 5vh;
+    float: left;
+}
+.example-card-footer {
+    padding: 16px;
 }

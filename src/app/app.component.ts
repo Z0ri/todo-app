@@ -46,6 +46,10 @@ export class AppComponent implements OnInit{
     }
   }
 
+  seeProfile(){
+    //see profile
+  }
+
   onLogout(){
     this.cookieService.delete("user");
     window.location.reload();
