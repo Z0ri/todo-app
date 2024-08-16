@@ -8,9 +8,9 @@ import { DeskFormComponent } from '../desk-form/desk-form.component';
 import { CardComponent } from "../card/card.component";
 import { SharingServiceService } from '../../services/sharing-service.service';
 import { skip } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { response } from 'express';
+import { HttpClient, withFetch } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-desk',
@@ -32,11 +32,12 @@ export class DeskComponent implements AfterViewInit{
 
   constructor(
     private sharingService: SharingServiceService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private dataService: DataService
   ){}
 
   ngAfterViewInit(): void {
-    //generate all cards in the DB
+    //generate all cards that are inside the DB
     this.http.get<any>("https://todo-app-8ce90-default-rtdb.firebaseio.com/users.json")
     .subscribe((response)=>{
       for (let id in response) {
@@ -47,30 +48,31 @@ export class DeskComponent implements AfterViewInit{
           if (user.projects) {
             for (let projectId in user.projects) {
                 const project = user.projects[projectId];
-                this.createCardProject(project.title, project.description);
+                this.createCardProject(project.title, project.description, projectId);
             }
           }
         }
       }
     });
-    //get card info and create card
-    this.sharingService.cardInfoSubject
+    //get card info and create card client
+    this.sharingService.createCardSubject
     .pipe(skip(1))
-    .subscribe((data)=>{
-      this.createCardProject(data.title, data.description);
+    .subscribe(()=>{
+      this.createCardProject(this.dataService.projectData.title, this.dataService.projectData.description, this.dataService.projectData.id);
     });
   }
-
+  //open project creation form
   openForm(){
     this.dialog.open(DeskFormComponent);
   }
-
-  createCardProject(title: string, description: string){
+  //create project's card
+  createCardProject(title: string, description: string, id: string){
     // Create a CardComponent
     const cardRef: ComponentRef<CardComponent> = this.cardContainer.createComponent(CardComponent);
     // Create card
     cardRef.instance.title = title;
     cardRef.instance.description = description;
+    cardRef.instance.projectId = id;
     // cardRef.instance.tags = tags;
   }
   

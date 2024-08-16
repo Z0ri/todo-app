@@ -7,6 +7,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { SharingServiceService } from '../../services/sharing-service.service';
 import { HttpClient, withFetch } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { DataService } from '../../services/data.service';
 @Component({
   selector: 'app-desk-form',
   standalone: true,
@@ -27,24 +28,21 @@ export class DeskFormComponent {
   http: HttpClient = inject(HttpClient);
   constructor(
     private sharingService: SharingServiceService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private dataService: DataService
   ){}
   createProject(form: NgForm){
     let title = form.value.title;
     let description = form.value.description;
-    const data = {
-      title: title,
-      description: description,
-      tasks: {
-        task1: "sample"
-      }
-    };
-    //send card's data via client
-    this.sharingService.cardInfoSubject.next(data);
+    //set project's data in service object
+    this.dataService.projectData.title = title;
+    this.dataService.projectData.description = description;
+    //norify to create card
+    this.sharingService.createCardSubject.next();
     //data insertion in DB
     this.http.post(
       `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`,
-      data
+      this.dataService.projectData
     ).subscribe((response) => {
       this.sharingService.createCardSubject.next();
     });

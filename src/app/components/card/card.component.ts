@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { SharingServiceService } from '../../services/sharing-service.service';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-card',
@@ -25,11 +26,21 @@ export class CardComponent {
   projectTitle: string = "";
   @Input() title: string = '';
   @Input() description: string = '';
+  @Input() projectId: string = '';
   @Input() tags: string[] = [];
 
-  constructor(private sharingService: SharingServiceService){}
+  constructor(
+    private sharingService: SharingServiceService,
+    private dataService: DataService
+  ){}
 
   onOpen(title: string){
+    //sarà inutile
     this.sharingService.cardTitleSubject.next(title);
+    this.dataService.projectData.id = this.projectId;
+  }
+
+  deleteProject(){
+    //delete project
   }
 }

@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { RouterOutlet,Router } from '@angular/router';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {CdkDrag, CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropList} from '@angular/cdk/drag-drop';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -7,7 +7,10 @@ import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectFormComponent } from '../project-form/project-form.component';
 import { SharingServiceService } from '../../services/sharing-service.service';
-import { title } from 'process';
+import { HttpClient, withFetch } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
+import { DataService } from '../../services/data.service';
+import { skip } from 'rxjs';
 
 @Component({
   selector: 'app-project',
@@ -23,18 +26,21 @@ import { title } from 'process';
   templateUrl: './project.component.html',
   styleUrl: './project.component.css'
 })
-export class ProjectComponent implements OnInit{
+export class ProjectComponent implements OnInit, OnDestroy{
+  http: HttpClient = inject(HttpClient);
   projectTitle: string = "";
   readonly dialog = inject(MatDialog);
   
 
-  todo: string[] = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
-  doing: string[] = ['eat', 'jump', 'exercise', 'watch TV series', 'float'];
-  done: string[] = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
+  todo: string[] = [];
+  doing: string[] = [];
+  done: string[] = [];
 
   ngOnInit(): void {
     //get task's name
-    this.sharingService.taskSubject.subscribe((taskName) => {
+    this.sharingService.taskSubject.
+    pipe(skip(1))
+    .subscribe((taskName) => {
       this.todo.push(taskName);
     });
     //get project's name
@@ -44,9 +50,26 @@ export class ProjectComponent implements OnInit{
   }
 
   constructor(
-    private router: Router,
-    private sharingService: SharingServiceService
+    private sharingService: SharingServiceService,
+    private dataService: DataService,
+    private cookieService: CookieService
   ){}
+
+  ngOnDestroy(): void {
+    console.log("user id: " + this.cookieService.get("user"));
+    console.log("project id: " + this.dataService.projectData.id);
+    console.log(this.todo);
+    //salva task in DB
+    // this.http.put(
+    //   "https://todo-app-8ce90-default-rtdb.firebaseio.com/users/" +
+    //     this.cookieService.get("user") +
+    //     "/projects/" +
+    //     this.dataService.projectData.id +
+    //     "/tasks/todo.json",
+    //   { tasks: this.todo }
+    // );
+    
+  }
 
   createTask(){
     //dialog window opening

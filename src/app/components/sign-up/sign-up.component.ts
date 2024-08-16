@@ -27,7 +27,7 @@ export class SignUpComponent {
     this.http.post<{name: string}>("https://todo-app-8ce90-default-rtdb.firebaseio.com/users.json", 
       JSON.parse(JSON.stringify(form.value)))
       .subscribe((response)=>{
-        console.log("server response: ", response);
+        console.log(response);
       });
     this.router.navigate(['/login']); 
   }
