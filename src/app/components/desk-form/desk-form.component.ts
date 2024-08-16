@@ -42,11 +42,11 @@ export class DeskFormComponent {
     //send card's data via client
     this.sharingService.cardInfoSubject.next(data);
     //data insertion in DB
-    // this.http.post(
-    //   `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`,
-    //   data
-    // ).subscribe((response) => {
-    //   this.sharingService.createCardSubject.next();
-    // });
+    this.http.post(
+      `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`,
+      data
+    ).subscribe((response) => {
+      this.sharingService.createCardSubject.next();
+    });
   }
 }
