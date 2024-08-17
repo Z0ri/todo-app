@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatCardModule} from '@angular/material/card';
 import {MatChipsModule} from '@angular/material/chips';
@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { SharingServiceService } from '../../services/sharing-service.service';
 import { DataService } from '../../services/data.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-card',
@@ -23,8 +24,10 @@ import { DataService } from '../../services/data.service';
   styleUrl: './card.component.css'
 })
 export class CardComponent {
+  http: HttpClient = inject(HttpClient);
   projectTitle: string = "";
-  @Input() title: string = '';
+  //*cardRef
+  @Input() title: string = '';        
   @Input() description: string = '';
   @Input() projectId: string = '';
   @Input() tags: string[] = [];
@@ -35,8 +38,8 @@ export class CardComponent {
   ){}
 
   onOpen(title: string){
-    //sarà inutile
-    this.sharingService.cardTitleSubject.next(title);
+    this.sharingService.cardTitleSubject.next(title); //sarà inutile
+    console.log(this.projectId);
     this.dataService.projectData.id = this.projectId;
   }
 

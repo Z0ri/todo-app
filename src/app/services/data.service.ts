@@ -7,10 +7,7 @@ export class DataService {
   public projectData = {
     id: "",
     title: "",
-    description: "",
-    tasks: {
-      task: "task0"
-    }
+    description: ""
   }
   constructor() { }
 }

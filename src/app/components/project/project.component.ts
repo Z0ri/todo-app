@@ -10,7 +10,7 @@ import { SharingServiceService } from '../../services/sharing-service.service';
 import { HttpClient, withFetch } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { DataService } from '../../services/data.service';
-import { skip } from 'rxjs';
+import { map, Observable, skip } from 'rxjs';
 
 @Component({
   selector: 'app-project',
@@ -33,15 +33,18 @@ export class ProjectComponent implements OnInit, OnDestroy{
   
 
   todo: string[] = [];
+  todoObj: { [key: string]: string } = {};
   doing: string[] = [];
+  doingObj: { [key: string]: string} = {};
   done: string[] = [];
+  doneObj: {[key:string]:string} = {};
 
   ngOnInit(): void {
     //get task's name
     this.sharingService.taskSubject.
     pipe(skip(1))
     .subscribe((taskName) => {
-      this.todo.push(taskName);
+      this.todo.push(taskName); //create task element
     });
     //get project's name
     this.sharingService.cardTitleSubject.subscribe((title)=>{
@@ -56,21 +59,48 @@ export class ProjectComponent implements OnInit, OnDestroy{
   ){}
 
   ngOnDestroy(): void {
-    console.log("user id: " + this.cookieService.get("user"));
-    console.log("project id: " + this.dataService.projectData.id);
-    console.log(this.todo);
-    //salva task in DB
-    // this.http.put(
-    //   "https://todo-app-8ce90-default-rtdb.firebaseio.com/users/" +
-    //     this.cookieService.get("user") +
-    //     "/projects/" +
-    //     this.dataService.projectData.id +
-    //     "/tasks/todo.json",
-    //   { tasks: this.todo }
-    // );
-    
-  }
+    this.arrayToObj(this.todo, this.todoObj);
+    this.arrayToObj(this.doing, this.doingObj);
+    this.arrayToObj(this.done, this.doneObj);
+    //SAVE
 
+
+    //UPDATE
+    //todo
+    this.updateTasks("todo",this.todoObj);
+    //doing
+    this.updateTasks("doing",this.doingObj);
+    //done
+    this.updateTasks("done",this.doneObj);
+  }
+  //transforming arrays into objects
+  arrayToObj(array: any[], obj: { [key: string]: string }){
+    array.forEach(task => {
+      const newKey = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+      obj[newKey] = task;
+    });   
+  }
+  //save tasks
+  saveTasks(sectionName: string, obj: {[key:string]:string}){
+
+  }
+  //update taks section in DB
+  updateTasks(sectionName: string, obj: {[key:string]:string}){
+    this.http.patch(
+      "https://todo-app-8ce90-default-rtdb.firebaseio.com/users/" +
+        this.cookieService.get("user") +
+        "/projects/" +
+        this.dataService.projectData.id +
+        "/tasks/"+sectionName+".json",
+      obj
+    ).subscribe();
+  }
+  //check if "tasks" section is created
+  // checkSectionCreated(path: string): Observable<boolean> {
+  //   return this.http.get(path).pipe(
+  //     map(response => response != null && response != undefined)
+  //   );
+  // }
   createTask(){
     //dialog window opening
     this.dialog.open(ProjectFormComponent, {

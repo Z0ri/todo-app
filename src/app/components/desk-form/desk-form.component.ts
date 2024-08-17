@@ -8,6 +8,7 @@ import { SharingServiceService } from '../../services/sharing-service.service';
 import { HttpClient, withFetch } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { DataService } from '../../services/data.service';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 @Component({
   selector: 'app-desk-form',
   standalone: true,
@@ -19,7 +20,7 @@ import { DataService } from '../../services/data.service';
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
-    MatDialogClose
+    MatDialogClose,
   ],
   templateUrl: './desk-form.component.html',
   styleUrl: './desk-form.component.css'
@@ -32,19 +33,16 @@ export class DeskFormComponent {
     private dataService: DataService
   ){}
   createProject(form: NgForm){
-    let title = form.value.title;
-    let description = form.value.description;
     //set project's data in service object
-    this.dataService.projectData.title = title;
-    this.dataService.projectData.description = description;
-    //norify to create card
-    this.sharingService.createCardSubject.next();
+    this.dataService.projectData.title = form.value.title;
+    this.dataService.projectData.description = form.value.description;
     //data insertion in DB
     this.http.post(
       `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`,
       this.dataService.projectData
-    ).subscribe((response) => {
+    ).subscribe(() => {
       this.sharingService.createCardSubject.next();
     });
   }
+  
 }

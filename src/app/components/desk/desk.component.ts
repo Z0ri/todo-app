@@ -56,7 +56,6 @@ export class DeskComponent implements AfterViewInit{
     });
     //get card info and create card client
     this.sharingService.createCardSubject
-    .pipe(skip(1))
     .subscribe(()=>{
       this.createCardProject(this.dataService.projectData.title, this.dataService.projectData.description, this.dataService.projectData.id);
     });
