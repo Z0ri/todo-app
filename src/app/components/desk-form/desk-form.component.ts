@@ -40,8 +40,8 @@ export class DeskFormComponent {
     this.http.post(
       `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`,
       this.dataService.projectData
-    ).subscribe(() => {
-      this.sharingService.createCardSubject.next();
+    ).subscribe((response: any) => {
+      this.sharingService.createCardSubject.next(response.name);
     });
   }
   

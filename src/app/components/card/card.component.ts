@@ -38,7 +38,7 @@ export class CardComponent {
   ){}
 
   onOpen(title: string){
-    this.sharingService.cardTitleSubject.next(title); //sarà inutile
+    this.sharingService.cardTitleSubject.next(title); //sarà inutile(?)
     console.log(this.projectId);
     this.dataService.projectData.id = this.projectId;
   }
