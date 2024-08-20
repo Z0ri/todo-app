@@ -26,8 +26,7 @@ import { map, Observable, skip, Subject, take, takeUntil } from 'rxjs';
   templateUrl: './project.component.html',
   styleUrl: './project.component.css'
 })
-export class ProjectComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+export class ProjectComponent implements OnInit {
   projectTitle: string = '';
   projectId: string = '';
   todo: string[] = [];
@@ -45,30 +44,24 @@ export class ProjectComponent implements OnInit, OnDestroy {
     private dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {
-    
-    this.projectId = this.dataService.projectData.id; //Get id
-    
+  ngOnInit(): void {    
     this.getTasks(); //get tasks from DB
 
     //(client) create new task
     this.sharingService.taskSubject
-      .pipe(skip(1), takeUntil(this.destroy$))
+      .pipe(skip(1))
       .subscribe((taskName) => {
         this.todo.push(taskName); // Create task element
       });
 
     //Get new project's name
     this.sharingService.cardInfo$
-    .pipe(takeUntil(this.destroy$))
     .subscribe((title: string)=>{
       this.projectTitle = title;
     })
-
-
   }
 
-  ngOnDestroy(): void {
+  save(){
     //Transform arrays to objects
     this.arrayToObj(this.todo, this.todoObj);
     this.arrayToObj(this.doing, this.doingObj);
@@ -78,14 +71,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.updateTasks('todo', this.todoObj);
     this.updateTasks('doing', this.doingObj);
     this.updateTasks('done', this.doneObj);
-
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   //get tasks in the database & add them to the view
   private getTasks(){
-    this.http.get(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects/${this.projectId}/tasks.json`)
+    console.log("ciao");
+    this.http.get(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects/${this.dataService.projectData.id}/tasks.json`)
     .subscribe((response: any) => {
       for(let key of Object.keys(response)){
         for(let k of Object.keys(response[key])){
@@ -121,12 +112,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   // Update tasks section in the database
   private updateTasks(sectionName: string, obj: { [key: string]: string }) {
-    if (!this.destroy$.isStopped) {
       this.http.patch(
         `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get('user')}/projects/${this.dataService.projectData.id}/tasks/${sectionName}.json`,
         obj
       ).subscribe();
-    }
   }
 
   createTask() {
