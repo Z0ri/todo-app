@@ -39,7 +39,7 @@ export class DeskComponent implements AfterViewInit{
   ngAfterViewInit(): void {
     //generate all cards that are inside the DB
     this.http.get<any>("https://todo-app-8ce90-default-rtdb.firebaseio.com/users.json")
-    .subscribe((response: any)=>{
+    .subscribe((response)=>{
       for (let id in response) {
         const user = response[id];
         //get the projects of just the logged person
@@ -56,8 +56,8 @@ export class DeskComponent implements AfterViewInit{
     });
     //get card info and create card client
     this.sharingService.createCardSubject
-    .subscribe((projectId: any)=>{
-      this.createCardProject(this.dataService.projectData.title, this.dataService.projectData.description, projectId);
+    .subscribe((id: any)=>{
+      this.createCardProject(this.dataService.projectData.title, this.dataService.projectData.description, id);
     });
   }
   //open project creation form

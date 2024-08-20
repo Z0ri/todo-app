@@ -62,9 +62,6 @@ export class ProjectComponent implements OnInit, OnDestroy{
     this.arrayToObj(this.todo, this.todoObj);
     this.arrayToObj(this.doing, this.doingObj);
     this.arrayToObj(this.done, this.doneObj);
-    //SAVE
-
-
     //UPDATE
     //todo
     this.updateTasks("todo",this.todoObj);
@@ -80,10 +77,6 @@ export class ProjectComponent implements OnInit, OnDestroy{
       obj[newKey] = task;
     });   
   }
-  //save tasks
-  saveTasks(sectionName: string, obj: {[key:string]:string}){
-
-  }
   //update taks section in DB
   updateTasks(sectionName: string, obj: {[key:string]:string}){
     this.http.patch(
@@ -95,12 +88,7 @@ export class ProjectComponent implements OnInit, OnDestroy{
       obj
     ).subscribe();
   }
-  //check if "tasks" section is created
-  // checkSectionCreated(path: string): Observable<boolean> {
-  //   return this.http.get(path).pipe(
-  //     map(response => response != null && response != undefined)
-  //   );
-  // }
+
   createTask(){
     //dialog window opening
     this.dialog.open(ProjectFormComponent, {
