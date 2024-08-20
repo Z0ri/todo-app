@@ -57,7 +57,7 @@ export class DeskComponent implements AfterViewInit{
     //get card info and create card client
     this.sharingService.createCardSubject
     .subscribe((id: any)=>{
-      this.createCardProject(this.dataService.projectData.title, this.dataService.projectData.description, id);
+      this.createCardProject(this.dataService.projectData.title, this.dataService.projectData.description, this.dataService.projectData.id);
     });
   }
   //open project creation form
@@ -72,7 +72,9 @@ export class DeskComponent implements AfterViewInit{
     cardRef.instance.title = title;
     cardRef.instance.description = description;
     cardRef.instance.projectId = id;
-    // cardRef.instance.tags = tags;
+    // cardRef.instance.tags = tags; *tocca fa obj*
+    
+    //this.dataService.addCard(cardRef);
   }
   
 }

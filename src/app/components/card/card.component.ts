@@ -1,4 +1,4 @@
-import {Component, inject, Input} from '@angular/core';
+import {Component, ElementRef, inject, Input, ViewChild} from '@angular/core';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatCardModule} from '@angular/material/card';
 import {MatChipsModule} from '@angular/material/chips';
@@ -38,8 +38,8 @@ export class CardComponent {
   ){}
 
   onOpen(title: string){
-    this.dataService.projectData.id = this.projectId;
-    this.sharingService.cardTitleSubject.next(title); //sarà inutile(?)
+    this.dataService.projectData.id = this.projectId; //set id to opened project's id
+    this.sharingService.cardInfo$.next(title); //sarà inutile(?)
   }
 
   deleteProject(){
