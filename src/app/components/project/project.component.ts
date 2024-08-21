@@ -1,5 +1,5 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RouterOutlet, RouterModule } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {CdkDrag, CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropList} from '@angular/cdk/drag-drop';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -10,13 +10,16 @@ import { SharingServiceService } from '../../services/sharing-service.service';
 import { HttpClient, withFetch } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { DataService } from '../../services/data.service';
-import { map, Observable, skip, Subject, take, takeUntil } from 'rxjs';
+import {skip} from 'rxjs';
+import _, { keys } from 'lodash';
+
 
 @Component({
   selector: 'app-project',
   standalone: true,
   imports: [
     RouterOutlet,
+    RouterModule,
     MatButtonModule,
     CdkDrag,
     CdkDropList,
@@ -28,7 +31,6 @@ import { map, Observable, skip, Subject, take, takeUntil } from 'rxjs';
 })
 export class ProjectComponent implements OnInit {
   projectTitle: string = '';
-  projectId: string = '';
   todo: string[] = [];
   todoObj: { [key: string]: string } = {};
   doing: string[] = [];
@@ -44,11 +46,11 @@ export class ProjectComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.getTasks(); //get tasks from DB
 
     //(client) create new task
-    this.sharingService.taskSubject
+    this.sharingService.task$
       .pipe(skip(1))
       .subscribe((taskName) => {
         this.todo.push(taskName); // Create task element
@@ -62,81 +64,112 @@ export class ProjectComponent implements OnInit {
   }
 
   save(){
-    //Transform arrays to objects
-    this.arrayToObj(this.todo, this.todoObj);
-    this.arrayToObj(this.doing, this.doingObj);
-    this.arrayToObj(this.done, this.doneObj);
-
-    // Update tasks in the database
-    this.updateTasks('todo', this.todoObj);
-    this.updateTasks('doing', this.doingObj);
-    this.updateTasks('done', this.doneObj);
+      //Transform arrays to objects
+      this.arrayToObj(this.todo, this.todoObj);
+      this.arrayToObj(this.doing, this.doingObj);
+      this.arrayToObj(this.done, this.doneObj);
+      
+      //update tasks in DB
+      this.updateTasks('todo', this.todoObj);
+      this.updateTasks('doing', this.doingObj);
+      this.updateTasks('done', this.doneObj);
   }
 
   //get tasks in the database & add them to the view
   private getTasks(){
-    console.log("ciao");
     this.http.get(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects/${this.dataService.projectData.id}/tasks.json`)
     .subscribe((response: any) => {
-      for(let key of Object.keys(response)){
-        for(let k of Object.keys(response[key])){
-          switch(key){
-            case "todo":
-              if(!this.todo.includes(response[key][k])){
-                this.todo.push(response[key][k]);
-              }
-              break;
-            case "doing":
-              if(!this.doing.includes(response[key][k])){
-                this.doing.push(response[key][k]);
-              }
-              break;
-            case "done":
-              if(!this.done.includes(response[key][k])){
-                this.done.push(response[key][k]);
-              }
-              break;
+      if(response!=null || response!=undefined){ //if the "tasks" section doesn't exist yet, response is undefined/null
+        //insert inside the arrays the tasks inside the view
+        for(let key of Object.keys(response)){
+          for(let k of Object.keys(response[key])){
+            switch(key){
+              case "todo":
+                if(!this.todo.includes(response[key][k])){
+                  this.todo.push(response[key][k]);
+                }
+                break;
+              case "doing":
+                if(!this.doing.includes(response[key][k])){
+                  this.doing.push(response[key][k]);
+                }
+                break;
+              case "done":
+                if(!this.done.includes(response[key][k])){
+                  this.done.push(response[key][k]);
+                }
+                break;
+            }
           }
         }
       }
     });
+
+
   }
 
   // Transforming arrays into objects
   private arrayToObj(array: string[], obj: { [key: string]: string }) {
-    array.forEach(task => {
-      const newKey = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
-      obj[newKey] = task;
-    });
+    if(array.length>0){
+      array.forEach(task => {
+        const newKey = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+        obj[newKey] = task;
+      });
+    }
   }
 
-  // Update tasks section in the database
+  // Update tasks in DB
   private updateTasks(sectionName: string, obj: { [key: string]: string }) {
-      this.http.patch(
-        `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get('user')}/projects/${this.dataService.projectData.id}/tasks/${sectionName}.json`,
-        obj
-      ).subscribe();
+    this.http.put(
+      `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get('user')}/projects/${this.dataService.projectData.id}/tasks/${sectionName}.json`,
+      obj
+    ).subscribe();
   }
 
+  // Open dialog window
   createTask() {
-    // Open dialog window
     this.dialog.open(ProjectFormComponent, {
       data: {}
     });
   }
 
+  //delete task from DB
   deleteTask(task: string) {
-    // Delete from todo
+    // this.arrayToObj(this.doing, this.doingObj);
+    // let taskKey: string = "";
+    // let foundKeys = Object.entries(this.doingObj)
+    // .filter(([key, value]) => value === task)
+    // .map(([key]) => key);
+
+    // for(let key of foundKeys){
+    //   if(this.doingObj[key] == task){
+    //     taskKey = key;
+    //   }
+    // }
+    // this.http.delete(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/
+    // projects/${this.dataService.projectData.id}/tasks/doing/${taskKey}.json`)
+    // .subscribe(()=>{
+    // })
+
+
+
+
+
+
+
+
+    //(client) delete tasks
+    // delete from todo
     const todoIndex = this.todo.indexOf(task);
     if (todoIndex !== -1) {
       this.todo.splice(todoIndex, 1);
     }
-    // Delete from doing
+    // delete from doing
     const doingIndex = this.doing.indexOf(task);
     if (doingIndex !== -1) {
       this.doing.splice(doingIndex, 1);
     }
-    // Delete from done
+    // delete from done
     const doneIndex = this.done.indexOf(task);
     if (doneIndex !== -1) {
       this.done.splice(doneIndex, 1);

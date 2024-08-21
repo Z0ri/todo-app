@@ -42,8 +42,15 @@ export class DeskFormComponent {
       this.dataService.projectData
     ).subscribe((response: any) => {
       this.dataService.projectData.id = response.name;
-      this.sharingService.createCardSubject.next(response.name);
+      this.sharingService.createCard$.next(response.name);
+      this.setId();
     });
   }
-  
+  //set correct id in DB
+  setId(){
+    this.http.patch(
+      `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects/${this.dataService.projectData.id}.json`, 
+      { id: this.dataService.projectData.id }  // Replace `newId` with the new value for the `id` field
+    ).subscribe();
+  }
 }

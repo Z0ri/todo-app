@@ -5,8 +5,8 @@ import { BehaviorSubject, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class SharingServiceService {
-  public taskSubject: BehaviorSubject<string> = new BehaviorSubject<string>("");
+  public task$: BehaviorSubject<string> = new BehaviorSubject<string>("");
   public cardInfo$: BehaviorSubject<string> = new BehaviorSubject<string>("");
-  public createCardSubject: Subject<void> = new Subject<void>();
+  public createCard$: Subject<void> = new Subject<void>();
   constructor() { }
 }

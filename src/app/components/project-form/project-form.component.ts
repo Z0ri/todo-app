@@ -25,6 +25,6 @@ import { SharingServiceService } from '../../services/sharing-service.service';
 export class ProjectFormComponent {
   constructor(private sharingService: SharingServiceService){}
   createTask(taskName: string){
-    this.sharingService.taskSubject.next(taskName);
+    this.sharingService.task$.next(taskName);
   }
 }
