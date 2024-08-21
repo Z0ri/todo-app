@@ -49,12 +49,12 @@ export class ProjectComponent implements OnInit {
   ngOnInit(): void {
     this.getTasks(); //get tasks from DB
 
-    //(client) create new task
+    //create task elements
     this.sharingService.task$
-      .pipe(skip(1))
-      .subscribe((taskName) => {
-        this.todo.push(taskName); // Create task element
-      });
+    .pipe(skip(1))
+    .subscribe((taskName) => {
+      this.todo.push(taskName); // Create task element
+    });
 
     //Get new project's name
     this.sharingService.cardInfo$
@@ -104,8 +104,6 @@ export class ProjectComponent implements OnInit {
         }
       }
     });
-
-
   }
 
   // Transforming arrays into objects
@@ -135,47 +133,32 @@ export class ProjectComponent implements OnInit {
 
   //delete task from DB
   deleteTask(task: string) {
-    // this.arrayToObj(this.doing, this.doingObj);
-    // let taskKey: string = "";
-    // let foundKeys = Object.entries(this.doingObj)
-    // .filter(([key, value]) => value === task)
-    // .map(([key]) => key);
-
-    // for(let key of foundKeys){
-    //   if(this.doingObj[key] == task){
-    //     taskKey = key;
-    //   }
-    // }
-    // this.http.delete(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/
-    // projects/${this.dataService.projectData.id}/tasks/doing/${taskKey}.json`)
-    // .subscribe(()=>{
-    // })
-
-
-
-
-
-
-
-
-    //(client) delete tasks
+    let eliminated = false; //variable to check if a task with a name has been deleted from a list to stop others to check for it
+    //delete task element
     // delete from todo
     const todoIndex = this.todo.indexOf(task);
     if (todoIndex !== -1) {
       this.todo.splice(todoIndex, 1);
+      eliminated = true;
     }
-    // delete from doing
-    const doingIndex = this.doing.indexOf(task);
-    if (doingIndex !== -1) {
-      this.doing.splice(doingIndex, 1);
+    if(!eliminated){
+      // delete from doing
+      const doingIndex = this.doing.indexOf(task);
+      if (doingIndex !== -1) {
+        this.doing.splice(doingIndex, 1);
+        eliminated = true;
+      }
     }
-    // delete from done
-    const doneIndex = this.done.indexOf(task);
-    if (doneIndex !== -1) {
-      this.done.splice(doneIndex, 1);
+    if(!eliminated){
+      // delete from done
+      const doneIndex = this.done.indexOf(task);
+      if (doneIndex !== -1) {
+        this.done.splice(doneIndex, 1);
+        eliminated = true;
+      }
     }
   }
-
+  //function that handles the element's drag & drop
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
