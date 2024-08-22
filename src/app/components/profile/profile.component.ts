@@ -66,7 +66,9 @@ export class ProfileComponent implements OnInit{
       if(response!=null && response!=undefined){
         for(let key of Object.keys(response)){
           for(let k of Object.keys(response[key]['tasks'])){
-            this.nTasksCreated += 1;
+            for(let t of Object.keys(response[key]['tasks'][k])){
+              this.nTasksCreated += 1;
+            }
           }
         }
       }
