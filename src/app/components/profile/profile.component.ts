@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 import { SharingServiceService } from '../../services/sharing-service.service';
-import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [
-    MatCardModule],
+    MatCardModule,
+    MatIcon
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -19,7 +21,6 @@ export class ProfileComponent implements OnInit{
 
   constructor(
     private sharingService: SharingServiceService,
-    private cookieService: CookieService
   ){}
   ngOnInit(): void {
     this.getUserNick();
@@ -36,7 +37,7 @@ export class ProfileComponent implements OnInit{
   getProjectsNumber(){
     this.sharingService.getProjects()
     .subscribe((response: any)=>{
-      if(response != null || response != undefined){
+      if(response != null && response != undefined){
         for (let key of Object.keys(response)) {
           this.nProjects += 1;
         }
@@ -46,11 +47,13 @@ export class ProfileComponent implements OnInit{
   getTasksCompleted(){
     this.sharingService.getProjects()
     .subscribe((response:any)=>{
-      for(let key of Object.keys(response)){
-        for(let k of Object.keys(response[key]['tasks'])){
-          if(k == "done"){
-            for(let t of Object.keys(response[key]['tasks'][k])){
-              this.nTasksCompleted += 1;
+      if(response!=null && response!=undefined){
+        for(let key of Object.keys(response)){
+          for(let k of Object.keys(response[key]['tasks'])){
+            if(k == "done"){
+              for(let t of Object.keys(response[key]['tasks'][k])){
+                this.nTasksCompleted += 1;
+              }
             }
           }
         }
@@ -60,9 +63,11 @@ export class ProfileComponent implements OnInit{
   getTasksCreated(){
     this.sharingService.getProjects()
     .subscribe((response:any)=>{
-      for(let key of Object.keys(response)){
-        for(let k of Object.keys(response[key]['tasks'])){
-          this.nTasksCreated += 1;
+      if(response!=null && response!=undefined){
+        for(let key of Object.keys(response)){
+          for(let k of Object.keys(response[key]['tasks'])){
+            this.nTasksCreated += 1;
+          }
         }
       }
     });

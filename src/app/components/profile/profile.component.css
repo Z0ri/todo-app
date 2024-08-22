@@ -1,11 +1,25 @@
+.img-container{
+    display: flex;
+    justify-content: center;
+}
+.img-container img{
+    width: 200px;
+    height: 200px;
+}
 .username{
     text-align: center;
 }
-.cards{
-    /* style for cards */
+.cards {
+    display: flex;
+    justify-content: center; /* This centers the child elements horizontally */
+    gap: 5vh; /* Adds some space between the cards */
 }
+  
 mat-card{
     background-color: white;
-    width: 200px;
+    width: 205px;
     float: left;
+}
+mat-card-content,mat-card-title{
+    text-align: center;
 }
