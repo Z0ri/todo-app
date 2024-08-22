@@ -7,10 +7,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeskFormComponent } from '../desk-form/desk-form.component';
 import { CardComponent } from "../card/card.component";
 import { SharingServiceService } from '../../services/sharing-service.service';
-import { skip } from 'rxjs';
 import { HttpClient, withFetch } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { DataService } from '../../services/data.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DeskSnackBarComponent } from '../desk-snack-bar/desk-snack-bar.component';
 
 @Component({
   selector: 'app-desk',
@@ -26,6 +27,7 @@ import { DataService } from '../../services/data.service';
   styleUrl: './desk.component.css'
 })
 export class DeskComponent implements AfterViewInit{
+  private _snackBar = inject(MatSnackBar);
   http: HttpClient = inject(HttpClient);
   readonly dialog = inject(MatDialog);
   @ViewChild('cardContainer', { read: ViewContainerRef }) cardContainer!: ViewContainerRef;
@@ -35,6 +37,12 @@ export class DeskComponent implements AfterViewInit{
     private cookieService: CookieService,
     private dataService: DataService
   ){}
+
+  openSnackBar(seconds: number) {
+    this._snackBar.openFromComponent(DeskSnackBarComponent, {
+      duration: seconds * 1000,
+    });
+  }
 
   ngAfterViewInit(): void {
     //generate all cards that are inside the DB for that user (unefficient, fix: http request with user id)
@@ -56,8 +64,9 @@ export class DeskComponent implements AfterViewInit{
     });
     //get card info and create card client
     this.sharingService.createCard$
-    .subscribe((id: any)=>{
+    .subscribe(()=>{
       this.createCardProject(this.dataService.projectData.title, this.dataService.projectData.description, this.dataService.projectData.id);
+      this.openSnackBar(2); // open snackbar
     });
   }
   //open project creation form
