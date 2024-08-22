@@ -1,4 +1,11 @@
+.username{
+    text-align: center;
+}
+.cards{
+    /* style for cards */
+}
 mat-card{
     background-color: white;
     width: 200px;
+    float: left;
 }

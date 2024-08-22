@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { User } from '../../models/User';
 import { CookieService } from 'ngx-cookie-service';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +14,16 @@ export class SharingServiceService {
   public cardInfo$: BehaviorSubject<string> = new BehaviorSubject<string>("");
   public createCard$: Subject<void> = new Subject<void>();
   constructor(
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private dataService: DataService
   ) { }
   getUsers(): Observable<any>{
     return this.http.get<{[key: string]: User}>("https://todo-app-8ce90-default-rtdb.firebaseio.com/users.json");
   }
-  getUserNick(){
-    //get user nick
+  getCurrentUser(){
+    return this.http.get(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/username.json`);
   }
   getProjects(){
-    return this.http.get(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}}/projects.json`);
+    return this.http.get(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`);
   }
 }

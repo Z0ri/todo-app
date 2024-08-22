@@ -1,9 +1,30 @@
-<mat-card class="example-card" appearance="outlined">
+<h1 class="username">{{nick}}</h1>
+<div class="cards">
+  <!-- projects created card -->
+  <mat-card class="example-card" appearance="outlined">
     <mat-card-header>
-      <mat-card-title>{{getUserNick()}}</mat-card-title>
+      <mat-card-title>Projects created</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <h4>Projects created: {{getProjectsNumber()}}</h4>
+        <span>{{nProjects}}</span>
     </mat-card-content>
   </mat-card>
-  
+  <!-- all tasks created -->
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Completed tasks</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <span>{{nTasksCompleted}}</span>
+    </mat-card-content>
+  </mat-card>
+  <!-- completed tasks -->
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Created tasks</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <span>{{nTasksCreated}}</span>
+    </mat-card-content>
+  </mat-card>
+</div>
