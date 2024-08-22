@@ -1,0 +1,15 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.2);
+}
+a{
+    margin-right: 20px;
+}
+mat-icon{
+    color: white;
+}
