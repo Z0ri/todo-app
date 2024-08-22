@@ -49,7 +49,7 @@ export class AppComponent implements OnInit{
   }
 
   seeProfile(){
-    //see profile
+    this.router.navigate(["/profile"]);
   }
 
   onLogout(){

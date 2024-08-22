@@ -2,13 +2,18 @@
 <div class="form-container mat-elevation-z16">
     <form #signupForm="ngForm" (ngSubmit)="onSignup(signupForm)">
         <mat-form-field class="example-full-width">
+            <mat-label>Username</mat-label>
+            <input matInput placeholder="Username" name="username" ngModel>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
             <mat-label>Email</mat-label>
-            <input matInput placeholder="Email" name="email" ngModel>
+            <input matInput placeholder="Email" name="email" type="email" ngModel>
         </mat-form-field>
         <mat-form-field class="example-full-width">
             <mat-label>Password</mat-label>
-            <input matInput placeholder="Password" name="password" ngModel>
+            <input matInput placeholder="Password" name="password" type="password" ngModel>
         </mat-form-field>
         <button mat-raised-button type="submit">Sign up</button>
     </form>
+    <p>already have an account? <a href="">Login</a></p>
 </div>

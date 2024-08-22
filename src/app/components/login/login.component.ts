@@ -39,10 +39,10 @@ export class LoginComponent implements OnInit{
   allUsers: User[] = [];
   http: HttpClient = inject(HttpClient);
   onLogin(form: NgForm){
-    let email = form.value.email;
+    let usernameOrEmail = form.value.usernameOrEmail;
     let password = form.value.password;
     for(let user of this.allUsers){
-      if(user.email == email && user.password == password){
+      if(user.email == usernameOrEmail || user.username == usernameOrEmail && user.password == password){
         //LOG IN SUCCESS
         this.router.navigate(['/']);   
         this.cookieService.set('user', user.id);
