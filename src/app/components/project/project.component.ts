@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet, RouterModule } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {CdkDrag, CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropList} from '@angular/cdk/drag-drop';
@@ -11,7 +11,8 @@ import { HttpClient, withFetch } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { DataService } from '../../services/data.service';
 import {skip} from 'rxjs';
-import _, { keys } from 'lodash';
+import {MatSnackBar,MatSnackBarAction,MatSnackBarActions,MatSnackBarLabel,MatSnackBarRef} from '@angular/material/snack-bar';
+import { ProjectSnackbarComponent } from '../project-snackbar/project-snackbar.component';
 
 
 @Component({
@@ -24,12 +25,13 @@ import _, { keys } from 'lodash';
     CdkDrag,
     CdkDropList,
     MatTooltipModule,
-    MatIcon
+    MatIcon,
   ],
   templateUrl: './project.component.html',
   styleUrl: './project.component.css'
 })
 export class ProjectComponent implements OnInit {
+  private _snackBar = inject(MatSnackBar);
   projectTitle: string = '';
   todo: string[] = [];
   todoObj: { [key: string]: string } = {};
@@ -46,6 +48,13 @@ export class ProjectComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
+  openSnackBar() {
+    let duration = 2;
+    this._snackBar.openFromComponent(ProjectSnackbarComponent, {
+      duration: duration * 1000,
+    });
+  }
+
   ngOnInit(): void {
     this.getTasks(); //get tasks from DB
 
@@ -54,6 +63,7 @@ export class ProjectComponent implements OnInit {
     .pipe(skip(1))
     .subscribe((taskName) => {
       this.todo.push(taskName); // Create task element
+      this.openSnackBar(); // Open snackbar
     });
 
     //Get new project's name
@@ -77,7 +87,7 @@ export class ProjectComponent implements OnInit {
 
   //get tasks in the database & add them to the view
   private getTasks(){
-    this.http.get(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects/${this.dataService.projectData.id}/tasks.json`)
+    this.dataService.getTasks()
     .subscribe((response: any) => {
       if(response!=null || response!=undefined){ //if the "tasks" section doesn't exist yet, response is undefined/null
         //insert inside the arrays the tasks inside the view
@@ -124,7 +134,7 @@ export class ProjectComponent implements OnInit {
     ).subscribe();
   }
 
-  // Open dialog window
+  // Open create task form dialog window
   createTask() {
     this.dialog.open(ProjectFormComponent, {
       data: {}
@@ -134,7 +144,7 @@ export class ProjectComponent implements OnInit {
   //delete task from DB
   deleteTask(task: string) {
     let eliminated = false; //variable to check if a task with a name has been deleted from a list to stop others to check for it
-    //delete task element
+    // delete task element
     // delete from todo
     const todoIndex = this.todo.indexOf(task);
     if (todoIndex !== -1) {
@@ -158,6 +168,7 @@ export class ProjectComponent implements OnInit {
       }
     }
   }
+
   //function that handles the element's drag & drop
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {

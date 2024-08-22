@@ -1,0 +1,12 @@
+.snackbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.snackbar-text {
+    text-align: center;
+    width: 100%;
+}
+  

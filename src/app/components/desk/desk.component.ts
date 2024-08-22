@@ -37,8 +37,8 @@ export class DeskComponent implements AfterViewInit{
   ){}
 
   ngAfterViewInit(): void {
-    //generate all cards that are inside the DB
-    this.http.get<any>("https://todo-app-8ce90-default-rtdb.firebaseio.com/users.json")
+    //generate all cards that are inside the DB for that user (unefficient, fix: http request with user id)
+    this.sharingService.getUsers()
     .subscribe((response)=>{
       for (let id in response) {
         const user = response[id];

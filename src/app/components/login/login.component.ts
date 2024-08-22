@@ -10,6 +10,7 @@ import { HttpClient, withFetch } from '@angular/common/http';
 import { map } from 'rxjs';
 import { User } from '../../../models/User';
 import { Router } from '@angular/router';
+import { SharingServiceService } from '../../services/sharing-service.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -27,7 +28,8 @@ export class LoginComponent implements OnInit{
   
   constructor(
     private router: Router,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private sharingService: SharingServiceService 
   ){}
 
   ngOnInit(): void {
@@ -49,7 +51,7 @@ export class LoginComponent implements OnInit{
   }
   
   fetchAllUsers(){
-    this.http.get<{[key: string]: User}>("https://todo-app-8ce90-default-rtdb.firebaseio.com/users.json")
+    this.sharingService.getUsers()
     .pipe(map((response) => {
       let users = [];
       for(let key in response){
