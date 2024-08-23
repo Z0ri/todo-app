@@ -3,7 +3,6 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { User } from '../../models/User';
 import { CookieService } from 'ngx-cookie-service';
-import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,6 @@ export class SharingServiceService {
   public createCard$: Subject<void> = new Subject<void>();
   constructor(
     private cookieService: CookieService,
-    private dataService: DataService
   ) { }
   getUsers(): Observable<any>{
     return this.http.get<{[key: string]: User}>("https://todo-app-8ce90-default-rtdb.firebaseio.com/users.json");
