@@ -2,8 +2,8 @@
 <mat-toolbar color="primary">
   <div>
       <a routerLink="/" style="color: white;"><mat-icon aria-label="Example home icon" fontIcon="home"></mat-icon></a>
-      <button mat-button>About us</button>
-    <button mat-button>Contacts</button>
+      <button mat-button routerLink="about-us">About us</button>
+      <button mat-button routerLink="contacts">Contacts</button>
   </div>
   <div class="buttons" *ngIf="!isLogged; else loggedInTemplate">
     <button mat-button routerLink="sign-up">

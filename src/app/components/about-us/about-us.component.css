@@ -1,0 +1,66 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #f4f4f4;
+}
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+header {
+    background: #333;
+    color: #fff;
+    padding-top: 20px;
+    min-height: 70px;
+    border-bottom: #ddd 1px solid;
+}
+header h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 24px;
+}
+img {
+    max-width: 100%;
+    height: auto;
+}
+.main-content {
+    padding: 20px;
+    background: #fff;
+    margin-bottom: 20px;
+}
+h2 {
+    color: #333;
+}
+.team-member {
+    margin: 20px 0;
+}
+.team-member img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+.team-member p {
+    margin: 10px 0;
+}
+.contact-info, .social-media {
+    margin: 20px 0;
+}
+.contact-info p, .social-media p {
+    margin: 5px 0;
+}
+.social-media a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #333;
+}
+.social-media a:hover {
+    text-decoration: underline;
+}
+.chooseTS{
+    margin-bottom: 10vh;
+}
