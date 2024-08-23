@@ -12,9 +12,13 @@ export class SharingServiceService {
   public task$: BehaviorSubject<string> = new BehaviorSubject<string>("");
   public cardInfo$: BehaviorSubject<string> = new BehaviorSubject<string>("");
   public createCard$: Subject<void> = new Subject<void>();
+  public deleteProject$: Subject<void> = new Subject<void>();
+
+  
   constructor(
     private cookieService: CookieService,
   ) { }
+  
   getUsers(): Observable<any>{
     return this.http.get<{[key: string]: User}>("https://todo-app-8ce90-default-rtdb.firebaseio.com/users.json");
   }

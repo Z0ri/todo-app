@@ -13,6 +13,7 @@ import { DataService } from '../../services/data.service';
 import {skip} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { ProjectSnackbarComponent } from '../project-snackbar/project-snackbar.component';
+import { SaveSnackbarComponent } from '../save-snackbar/save-snackbar.component';
 
 
 @Component({
@@ -48,9 +49,15 @@ export class ProjectComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
-  openSnackBar() {
+  openSnackBar():void {
     let duration = 2;
     this._snackBar.openFromComponent(ProjectSnackbarComponent, {
+      duration: duration * 1000,
+    });
+  }
+  openSaveSnackBar():void {
+    let duration = 2;
+    this._snackBar.openFromComponent(SaveSnackbarComponent, {
       duration: duration * 1000,
     });
   }
@@ -83,6 +90,8 @@ export class ProjectComponent implements OnInit {
       this.updateTasks('todo', this.todoObj);
       this.updateTasks('doing', this.doingObj);
       this.updateTasks('done', this.doneObj);
+
+      this.openSaveSnackBar();
   }
 
   //get tasks in the database & add them to the view

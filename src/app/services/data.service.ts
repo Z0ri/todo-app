@@ -15,15 +15,10 @@ export class DataService {
     title: "",
     description: ""
   }
-  public cards: ComponentRef<CardComponent>[] = [];
 
   constructor(private cookieService: CookieService){}
 
   getTasks(): Observable<any> {
     return this.http.get(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects/${this.projectData.id}/tasks.json`);
-  }
-
-  addCard(card: ComponentRef<CardComponent>){
-    this.cards.push(card);
   }
 }

@@ -12,6 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { DataService } from '../../services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeskSnackBarComponent } from '../desk-snack-bar/desk-snack-bar.component';
+import { DeskDeleteSnackbarComponent } from '../desk-delete-snackbar/desk-delete-snackbar.component';
 
 @Component({
   selector: 'app-desk',
@@ -44,6 +45,13 @@ export class DeskComponent implements AfterViewInit{
     });
   }
 
+  openDeleteSnackBar(): void{
+    let duration = 2;
+    this._snackBar.openFromComponent(DeskDeleteSnackbarComponent, {
+      duration: duration * 1000,
+    });
+  }
+
   ngAfterViewInit(): void {
     //generate all cards that are inside the DB for that user (unefficient, fix: http request with user id)
     this.sharingService.getUsers()
@@ -68,6 +76,10 @@ export class DeskComponent implements AfterViewInit{
       this.createCardProject(this.dataService.projectData.title, this.dataService.projectData.description, this.dataService.projectData.id);
       this.openSnackBar(2); // open snackbar
     });
+    //subscribe to subject for opening delete project snackbar
+    this.sharingService.deleteProject$.subscribe(()=>{
+      this.openDeleteSnackBar();
+    });
   }
   //open project creation form
   openForm(){
@@ -82,8 +94,6 @@ export class DeskComponent implements AfterViewInit{
     cardRef.instance.title = title;
     cardRef.instance.description = description;
     cardRef.instance.projectId = id;
-
-    // Optionally store or manage the component reference
-    this.dataService.addCard(cardRef);
   }
+  
 }

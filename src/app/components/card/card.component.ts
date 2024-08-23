@@ -60,5 +60,6 @@ export class CardComponent implements OnInit{
   deleteProject(){
     this.visible = false; //delete project in the DOM
     this.sharingService.deleteProject(this.projectId).subscribe()//delete project from DB
+    this.sharingService.deleteProject$.next(); //notify to open snackbar
   }
 }
