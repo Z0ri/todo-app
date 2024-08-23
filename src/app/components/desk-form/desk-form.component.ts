@@ -8,7 +8,7 @@ import { SharingServiceService } from '../../services/sharing-service.service';
 import { HttpClient, withFetch } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { DataService } from '../../services/data.service';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
+import {MatMenuModule} from '@angular/material/menu';
 @Component({
   selector: 'app-desk-form',
   standalone: true,
@@ -21,6 +21,7 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
+    MatMenuModule
   ],
   templateUrl: './desk-form.component.html',
   styleUrl: './desk-form.component.css'
@@ -36,16 +37,19 @@ export class DeskFormComponent {
     //set project's data in service object
     this.dataService.projectData.title = form.value.title;
     this.dataService.projectData.description = form.value.description;
-    //data insertion in DB
-    this.http.post(
-      `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`,
-      this.dataService.projectData
-    ).subscribe((response: any) => {
-      this.dataService.projectData.id = response.name;
-      this.sharingService.createCard$.next(response.name);
-      this.setId();
-    });
-  }
+
+    if(form.value.title){
+      //data insertion in DB
+      this.http.post(
+        `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`,
+        this.dataService.projectData
+      ).subscribe((response: any) => {
+        this.dataService.projectData.id = response.name;
+        this.sharingService.createCard$.next(response.name);
+        this.setId();
+      });
+      }
+    }
   //set correct id in DB
   setId(){
     this.http.patch(

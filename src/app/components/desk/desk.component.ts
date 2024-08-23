@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ViewContainerRef, ComponentRef, AfterViewInit } from '@angular/core';
+import { Component, inject, ViewChild, ViewContainerRef, ComponentRef, AfterViewInit, ComponentFactory, ComponentFactoryResolver } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {CdkDrag, CdkDropList} from '@angular/cdk/drag-drop';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -35,7 +35,7 @@ export class DeskComponent implements AfterViewInit{
   constructor(
     private sharingService: SharingServiceService,
     private cookieService: CookieService,
-    private dataService: DataService
+    private dataService: DataService,
   ){}
 
   openSnackBar(seconds: number) {
@@ -74,16 +74,16 @@ export class DeskComponent implements AfterViewInit{
     this.dialog.open(DeskFormComponent);
   }
   //create project's card
-  createCardProject(title: string, description: string, id: string){
-    // Create a CardComponent
+  createCardProject(title: string, description: string, id: string) {
+    // Create a new component instance
     const cardRef: ComponentRef<CardComponent> = this.cardContainer.createComponent(CardComponent);
-    // Create card
+
+    // Set input properties for the component instance
     cardRef.instance.title = title;
     cardRef.instance.description = description;
     cardRef.instance.projectId = id;
-    // cardRef.instance.tags = tags; *tocca fa obj*
-    
-    //this.dataService.addCard(cardRef);
+
+    // Optionally store or manage the component reference
+    this.dataService.addCard(cardRef);
   }
-  
 }

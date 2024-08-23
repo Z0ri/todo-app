@@ -26,4 +26,7 @@ export class SharingServiceService {
   getProjects(){
     return this.http.get(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`);
   }
+  deleteProject(projectId: string){
+    return this.http.delete(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects/${projectId}.json`); 
+  }
 }
