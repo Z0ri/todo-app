@@ -1,6 +1,15 @@
 mat-toolbar{
     justify-content: space-between;
 }
+mat-icon:hover{
+    transform: scale(1.05);
+}
+.account-circle{
+    font-size: 25px;
+}
+.account-circle:hover{
+    transform: scale(1.05);
+}
 .icon-container {
     display: flex;
     align-items: center;

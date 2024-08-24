@@ -13,3 +13,6 @@ a{
 mat-icon{
     color: white;
 }
+mat-icon:hover{
+    transform: scale(1.05);
+}
