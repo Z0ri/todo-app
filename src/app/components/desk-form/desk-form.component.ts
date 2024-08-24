@@ -59,6 +59,5 @@ export class DeskFormComponent {
       `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects/${this.dataService.projectData.id}.json`, 
       { id: this.dataService.projectData.id }  // Replace `newId` with the new value for the `id` field
     ).subscribe();
-    console.log(this.dataService.projectData.id);
   }
 }

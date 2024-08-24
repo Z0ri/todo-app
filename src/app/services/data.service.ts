@@ -9,7 +9,9 @@ import { User } from '../../models/User';
   providedIn: 'root'
 })
 export class DataService {
+  public allUsers: User[] = [];
   public http: HttpClient = inject(HttpClient);
+  
   public projectData = {
     id: "",
     title: "",

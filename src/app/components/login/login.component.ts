@@ -42,7 +42,11 @@ export class LoginComponent implements OnInit{
   onLogin(form: NgForm){
     let usernameOrEmail = form.value.usernameOrEmail;
     let password = form.value.password;
+    console.log(usernameOrEmail);
+    console.log(password);
     for(let user of this.allUsers){
+      console.log(user.email);
+      console.log(user.password);
       if(user.email == usernameOrEmail || user.username == usernameOrEmail && user.password == password){
         //LOG IN SUCCESS
         this.router.navigate(['/']);   
