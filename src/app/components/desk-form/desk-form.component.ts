@@ -39,22 +39,26 @@ export class DeskFormComponent {
     this.dataService.projectData.description = form.value.description;
 
     if(form.value.title){
-      //data insertion in DB
-      this.http.post(
-        `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`,
-        this.dataService.projectData
-      ).subscribe((response: any) => {
-        this.dataService.projectData.id = response.name;
-        this.sharingService.createCard$.next(response.name);
-        this.setId();
-      });
-      }
+        //data insertion in DB
+        this.http.post(
+          `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects.json`,
+          this.dataService.projectData
+        ).subscribe((response: any) => {
+          this.dataService.projectData.id = response.name;
+          this.sharingService.createCard$.next(response.name);//subject to notify to create project card
+          this.setId();
+        });
+        }
     }
-  //set correct id in DB
+  
   setId(){
+    //set cookie for id
+    this.cookieService.set("projectId", this.dataService.projectData.id);
+    //set correct id in DB
     this.http.patch(
       `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects/${this.dataService.projectData.id}.json`, 
       { id: this.dataService.projectData.id }  // Replace `newId` with the new value for the `id` field
     ).subscribe();
+    console.log(this.dataService.projectData.id);
   }
 }

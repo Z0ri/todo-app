@@ -10,3 +10,6 @@
 .mainImg{
     margin-top: 10vh;
 }
+.startButton:hover{
+    transform: scale(1.05);
+}

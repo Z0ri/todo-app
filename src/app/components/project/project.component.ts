@@ -74,24 +74,24 @@ export class ProjectComponent implements OnInit {
     });
 
     //Get new project's name
-    this.sharingService.cardInfo$
-    .subscribe((title: string)=>{
-      this.projectTitle = title;
+    this.sharingService.getProjectTitle()
+    .subscribe((response: any)=>{
+      this.projectTitle = response.replace(/^"(.*)"$/, '$1');
     })
   }
 
   save(){
-      //Transform arrays to objects
-      this.arrayToObj(this.todo, this.todoObj);
-      this.arrayToObj(this.doing, this.doingObj);
-      this.arrayToObj(this.done, this.doneObj);
-      
-      //update tasks in DB
-      this.updateTasks('todo', this.todoObj);
-      this.updateTasks('doing', this.doingObj);
-      this.updateTasks('done', this.doneObj);
+    //Transform arrays to objects
+    this.arrayToObj(this.todo, this.todoObj);
+    this.arrayToObj(this.doing, this.doingObj);
+    this.arrayToObj(this.done, this.doneObj);
+    
+    //update tasks in DB
+    this.updateTasks('todo', this.todoObj);
+    this.updateTasks('doing', this.doingObj);
+    this.updateTasks('done', this.doneObj);
 
-      this.openSaveSnackBar();
+    this.openSaveSnackBar(); //open save snackbar
   }
 
   //get tasks in the database & add them to the view
@@ -138,7 +138,7 @@ export class ProjectComponent implements OnInit {
   // Update tasks in DB
   private updateTasks(sectionName: string, obj: { [key: string]: string }) {
     this.http.put(
-      `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get('user')}/projects/${this.dataService.projectData.id}/tasks/${sectionName}.json`,
+      `https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get('user')}/projects/${this.cookieService.get("projectId")}/tasks/${sectionName}.json`,
       obj
     ).subscribe();
   }

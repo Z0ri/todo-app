@@ -4,13 +4,14 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule, NgForm} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import { HttpClient, withFetch } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-sign-up',
   standalone: true,
   imports: [
+    RouterModule,
     MatInputModule,
     MatFormFieldModule,
     FormsModule,

@@ -11,6 +11,12 @@
     margin-bottom: 5vh;
     margin-left: 5vh;
 }
-.cards{
-    margin: auto;
+.create-project-btn:hover{
+    transform: scale(1.05);
 }
+.cards {
+    display: grid; /* Enables CSS Grid */
+    gap: 16px; /* Space between grid items */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
+    padding: 16px; /* Optional padding around the grid */
+  }

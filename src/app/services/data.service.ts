@@ -19,6 +19,6 @@ export class DataService {
   constructor(private cookieService: CookieService){}
 
   getTasks(): Observable<any> {
-    return this.http.get(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects/${this.projectData.id}/tasks.json`);
+    return this.http.get(`https://todo-app-8ce90-default-rtdb.firebaseio.com/users/${this.cookieService.get("user")}/projects/${this.cookieService.get("projectId")}/tasks.json`);
   }
 }

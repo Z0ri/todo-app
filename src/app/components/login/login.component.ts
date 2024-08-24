@@ -9,12 +9,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { HttpClient, withFetch } from '@angular/common/http';
 import { map } from 'rxjs';
 import { User } from '../../../models/User';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { SharingServiceService } from '../../services/sharing-service.service';
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
+    RouterModule,
     MatInputModule,
     MatFormFieldModule,
     FormsModule,

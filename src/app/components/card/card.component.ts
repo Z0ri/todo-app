@@ -51,15 +51,15 @@ export class CardComponent implements OnInit{
       }
     })
   }
-
   onOpen(title: string){
-    this.dataService.projectData.id = this.projectId; //set id to opened project's id
-    this.sharingService.cardInfo$.next(title); //sarà inutile(?)
+    this.cookieService.set("projectId", this.projectId);
+    this.sharingService.cardInfo$.next(title);
   }
   //delete project
   deleteProject(){
     this.visible = false; //delete project in the DOM
-    this.sharingService.deleteProject(this.projectId).subscribe()//delete project from DB
+    this.cookieService.set("projectId", this.projectId);
+    this.sharingService.deleteProject().subscribe()//delete project from DB
     this.sharingService.deleteProject$.next(); //notify to open snackbar
   }
 }
