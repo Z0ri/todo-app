@@ -14,6 +14,7 @@ import {skip} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { ProjectSnackbarComponent } from '../project-snackbar/project-snackbar.component';
 import { SaveSnackbarComponent } from '../save-snackbar/save-snackbar.component';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -27,6 +28,7 @@ import { SaveSnackbarComponent } from '../save-snackbar/save-snackbar.component'
     CdkDropList,
     MatTooltipModule,
     MatIcon,
+    FormsModule
   ],
   templateUrl: './project.component.html',
   styleUrl: './project.component.css'
@@ -46,7 +48,7 @@ export class ProjectComponent implements OnInit {
     private dataService: DataService,
     private cookieService: CookieService,
     private http: HttpClient,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
   openSnackBar():void {
@@ -176,6 +178,11 @@ export class ProjectComponent implements OnInit {
         eliminated = true;
       }
     }
+  }
+
+  //function tha allows project's renaming
+  rename(){
+    
   }
 
   //function that handles the element's drag & drop

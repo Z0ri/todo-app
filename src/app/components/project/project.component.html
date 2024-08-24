@@ -1,10 +1,15 @@
-<h4 class="project-title">{{projectTitle}} <mat-icon class="edit-icon">edit</mat-icon></h4>
-<button mat-raised-button matTooltip="Create new task" class="create-task-btn" (click)="createTask()">
-    +
-</button>
-<button mat-raised-button (click)="save()" routerLink="/desk">
-  Save
-</button>
+<div class="project-info">
+  <input type="text" class="project-title" [(ngModel)]="projectTitle">
+  <mat-icon class="edit-icon" (click)="rename()">edit</mat-icon>
+  <div class="buttons-container">
+    <button mat-raised-button matTooltip="Create new task" class="create-task-btn" (click)="createTask()">
+      +
+    </button>
+    <button mat-raised-button (click)="save()" routerLink="/desk">
+      Save
+    </button>
+  </div>
+</div>
 <div class="content">
     <div class="example-container">
       <!-- to do -->
