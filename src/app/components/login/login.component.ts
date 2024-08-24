@@ -11,6 +11,7 @@ import { map } from 'rxjs';
 import { User } from '../../../models/User';
 import { Router, RouterModule } from '@angular/router';
 import { SharingServiceService } from '../../services/sharing-service.service';
+import { DataService } from '../../services/data.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -30,23 +31,21 @@ export class LoginComponent implements OnInit{
   constructor(
     private router: Router,
     private cookieService: CookieService,
-    private sharingService: SharingServiceService 
+    private sharingService: SharingServiceService,
+    private dataService: DataService
   ){}
 
   ngOnInit(): void {
     this.fetchAllUsers();
   }
 
-  allUsers: User[] = [];
   http: HttpClient = inject(HttpClient);
   onLogin(form: NgForm){
+    console.log(this.dataService.allUsers);
     let usernameOrEmail = form.value.usernameOrEmail;
     let password = form.value.password;
-    console.log(usernameOrEmail);
-    console.log(password);
-    for(let user of this.allUsers){
-      console.log(user.email);
-      console.log(user.password);
+    for(let user of this.dataService.allUsers){
+      console.log(user.id);
       if(user.email == usernameOrEmail || user.username == usernameOrEmail && user.password == password){
         //LOG IN SUCCESS
         this.router.navigate(['/']);   
@@ -67,7 +66,12 @@ export class LoginComponent implements OnInit{
       return users;
     }))
     .subscribe((users) => {
-      this.allUsers = users;
+      let allUsers: User[] = [];
+      for(let user of users){
+        allUsers.push(new User(user.username, user.email, user.password, user.id));
+      }
+      this.dataService.allUsers = this.dataService.allUsers.concat(allUsers);
+      console.log(this.dataService.allUsers);
     })
   }
 }
